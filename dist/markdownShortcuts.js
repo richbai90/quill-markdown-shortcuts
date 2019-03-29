@@ -157,7 +157,7 @@ var MarkdownShortcuts = function () {
       }
     }, {
       name: "code-block",
-      pattern: /^`{3}(?:\s|\n)/g,
+      pattern: /^`{3}(?:\s|\n)/gm,
       action: function action(text, selection) {
         // Need to defer this action https://github.com/quilljs/quill/issues/1134
         setTimeout(function () {
@@ -336,7 +336,7 @@ var MarkdownShortcuts = function () {
       var codeBlock = this.matches.filter(function (match) {
         return match.name === "code-block";
       })[0];
-      return typeof text !== "undefined" && text && (this.ignoreTags.indexOf(tagName) === -1 || text.match(codeBlock.pattern) && text.match(codeBlock.pattern)[0]);
+      return typeof text !== "undefined" && text && (this.ignoreTags.indexOf(tagName) === -1 || text.match(codeBlock.pattern));
     }
   }, {
     key: "onSpace",
