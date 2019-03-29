@@ -68,7 +68,9 @@ class MarkdownShortcuts {
         action: (text, selection) => {
           // Need to defer this action https://github.com/quilljs/quill/issues/1134
           setTimeout(() => {
-            this.quill.formatLine(selection.index, 1, "code-block", true);
+            this.inCodeBlock
+              ? this.quill.removeFormat(selection.length, 1, "code-block")
+              : this.quill.formatLine(selection.index, 1, "code-block", true);
             this.quill.deleteText(selection.index - 4, 4);
             this.inCodeBlock = !this.inCodeBlock;
           }, 0);
@@ -262,11 +264,14 @@ class MarkdownShortcuts {
   }
 
   isValid(text, tagName) {
-    const codeBlock = this.matches.filter(match => match.name === 'code-block')[0];
+    const codeBlock = this.matches.filter(
+      match => match.name === "code-block"
+    )[0];
     return (
       typeof text !== "undefined" &&
       text &&
-      (this.ignoreTags.indexOf(tagName) === -1 || text.match(codeBlock.pattern)[0])
+      (this.ignoreTags.indexOf(tagName) === -1 ||
+        (text.match(codeBlock.pattern) && text.match(codeBlock.pattern)[0]))
     );
   }
 
