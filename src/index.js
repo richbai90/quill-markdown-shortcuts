@@ -26,7 +26,9 @@
  // THE SOFTWARE.
  //
 
+import Quill from 'quill'
 import HorizontalRule from './formats/hr'
+
 Quill.register('formats/horizontal', HorizontalRule)
 
 class MarkdownShortcuts {
@@ -34,16 +36,19 @@ class MarkdownShortcuts {
     this.quill = quill
     this.options = options
 
+    this.ignoreTags = ['PRE']
     this.matches = [
       {
         name: 'header',
         pattern: /^(#){1,6}\s/g,
-        action: (text, selection) => {
-          const size = text.trim().length
+        action: (text, selection, pattern) => {
+          var match = pattern.exec(text)
+          if (!match) return
+          const size = match[0].length
           // Need to defer this action https://github.com/quilljs/quill/issues/1134
           setTimeout(() => {
-            this.quill.formatLine(selection.index, 0, 'header', size)
-            this.quill.deleteText(selection.index - text.length, text.length)
+            this.quill.formatLine(selection.index, 0, 'header', size - 1)
+            this.quill.deleteText(selection.index - size, size)
           }, 0)
         }
       },
@@ -239,18 +244,26 @@ class MarkdownShortcuts {
     })
   }
 
+  isValid (text, tagName) {
+    return (
+      typeof text !== 'undefined' &&
+      text &&
+      this.ignoreTags.indexOf(tagName) === -1
+    )
+  }
+
   onSpace () {
     const selection = this.quill.getSelection()
     if (!selection) return
     const [line, offset] = this.quill.getLine(selection.index)
     const text = line.domNode.textContent
     const lineStart = selection.index - offset
-    if (typeof text !== 'undefined' && text) {
+    if (this.isValid(text, line.domNode.tagName)) {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
           // We need to replace only matched text not the whole line
-          console.log('matched', match.name, text)
+          console.log('matched:', match.name, text)
           match.action(text, selection, match.pattern, lineStart)
           return
         }
@@ -265,7 +278,7 @@ class MarkdownShortcuts {
     const text = line.domNode.textContent + ' '
     const lineStart = selection.index - offset
     selection.length = selection.index++
-    if (typeof text !== 'undefined' && text) {
+    if (this.isValid(text, line.domNode.tagName)) {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
@@ -276,6 +289,10 @@ class MarkdownShortcuts {
       }
     }
   }
+}
+
+if (window.Quill) {
+  window.Quill.register('modules/markdownShortcuts', MarkdownShortcuts)
 }
 
 module.exports = MarkdownShortcuts
