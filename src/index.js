@@ -266,7 +266,7 @@ class MarkdownShortcuts {
     return (
       typeof text !== "undefined" &&
       text &&
-      (this.ignoreTags.indexOf(tagName) === -1 && !text.match(codeBlock.pattern)[0])
+      (this.ignoreTags.indexOf(tagName) === -1 || text.match(codeBlock.pattern)[0])
     );
   }
 
