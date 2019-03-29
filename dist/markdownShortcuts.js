@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("Quill"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(["Quill"], factory);
+		define([], factory);
 	else if(typeof exports === 'object')
-		exports["MarkdownShortcuts"] = factory(require("Quill"));
+		exports["MarkdownShortcuts"] = factory();
 	else
-		root["MarkdownShortcuts"] = factory(root["Quill"]);
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_2__) {
+		root["MarkdownShortcuts"] = factory();
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -438,7 +438,7 @@ if (window.Quill) {
 }
 
 module.exports = function (Quill) {
-  Quill.register("formats/horizontal", _hr2.default);
+  Quill.register("formats/horizontal", (0, _hr2.default)(Quill));
   return MarkdownShortcuts;
 };
 
@@ -453,42 +453,32 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _quill = __webpack_require__(2);
-
-var _quill2 = _interopRequireDefault(_quill);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var BlockEmbed = _quill2.default.import('blots/block/embed');
+exports.default = function (Quill) {
+  var BlockEmbed = Quill.import("blots/block/embed");
 
-var HorizontalRule = function (_BlockEmbed) {
-  _inherits(HorizontalRule, _BlockEmbed);
+  var HorizontalRule = function (_BlockEmbed) {
+    _inherits(HorizontalRule, _BlockEmbed);
 
-  function HorizontalRule() {
-    _classCallCheck(this, HorizontalRule);
+    function HorizontalRule() {
+      _classCallCheck(this, HorizontalRule);
 
-    return _possibleConstructorReturn(this, (HorizontalRule.__proto__ || Object.getPrototypeOf(HorizontalRule)).apply(this, arguments));
-  }
+      return _possibleConstructorReturn(this, (HorizontalRule.__proto__ || Object.getPrototypeOf(HorizontalRule)).apply(this, arguments));
+    }
+
+    return HorizontalRule;
+  }(BlockEmbed);
+
+  HorizontalRule.blotName = "hr";
+  HorizontalRule.tagName = "hr";
 
   return HorizontalRule;
-}(BlockEmbed);
-
-HorizontalRule.blotName = 'hr';
-HorizontalRule.tagName = 'hr';
-
-exports.default = HorizontalRule;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+};
 
 /***/ })
 /******/ ]);

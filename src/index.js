@@ -312,6 +312,6 @@ if (window.Quill) {
 }
 
 module.exports = Quill => {
-  Quill.register("formats/horizontal", HorizontalRule);
+  Quill.register("formats/horizontal", HorizontalRule(Quill));
   return MarkdownShortcuts;
 };
