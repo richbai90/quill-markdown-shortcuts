@@ -335,7 +335,7 @@ var MarkdownShortcuts = function () {
     value: function isValid(text, tagName) {
       var codeBlock = this.matches.filter(function (match) {
         return match.name === 'code-block';
-      });
+      })[0];
       return typeof text !== "undefined" && text && (this.ignoreTags.indexOf(tagName) === -1 || text.match(codeBlock.pattern)[0]);
     }
   }, {

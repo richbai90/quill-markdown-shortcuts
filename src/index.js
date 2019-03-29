@@ -262,7 +262,7 @@ class MarkdownShortcuts {
   }
 
   isValid(text, tagName) {
-    const codeBlock = this.matches.filter(match => match.name === 'code-block');
+    const codeBlock = this.matches.filter(match => match.name === 'code-block')[0];
     return (
       typeof text !== "undefined" &&
       text &&
